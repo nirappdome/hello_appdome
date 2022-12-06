@@ -78,9 +78,7 @@ jobs:
           APPDOME_ANDROID_FS_ID: ${{ secrets.APPDOME_ANDROID_FS_ID }}
         run: |
           mkdir outputs
-          python3 appdome/appdome-api-python/appdome_api.py --app <apk/aab file> --sign_on_appdome --keystore <keystore file> \
-                  --keystore_pass ${{github.event.inputs.keystore_password}} --keystore_alias ${{github.event.inputs.keystore_alias}} --key_pass ${{github.event.inputs.key_pass}} \
-                  --output outputs/<output apk/aab> --certificate_output outputs/<output certificate pdf>
+          python3 appdome/appdome-api-python/appdome_api.py --app <apk/aab file> --sign_on_appdome --keystore <keystore file> --keystore_pass ${{github.event.inputs.keystore_password}} --keystore_alias ${{github.event.inputs.keystore_alias}} --key_pass ${{github.event.inputs.key_pass}} --output outputs/<output apk/aab> --certificate_output outputs/<output certificate pdf>
           ls outputs
           
       # Run appdome api for iOS apps
