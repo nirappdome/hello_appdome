@@ -19,6 +19,7 @@ on:
         options: 
         - monalisa
         - cschleiden
+        - Nir Alon
       message:
         required: true
       use-emoji:
