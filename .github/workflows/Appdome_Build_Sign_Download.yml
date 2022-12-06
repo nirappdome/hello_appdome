@@ -60,7 +60,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run requirments installation
-        run:
+        run: |
             apt update 
             apt install python3-pip
             pip3 install -r appdome/requirements.txt
