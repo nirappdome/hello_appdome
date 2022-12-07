@@ -69,13 +69,14 @@ jobs:
       - name: Run dependencies installation
         run: |
             sudo apt update 
+            sudo apt install curl
             sudo apt install python3-pip
             sudo pip3 install -r appdome/requirements.txt
       
       - name: download files
         run: |
           mkdir files
-          curl ${{github.event.inputs.keystore_file}}
+          curl -o file/file.keystore ${{github.event.inputs.keystore_file}}
 
       - name: make aoutput directories
         run: |
@@ -89,7 +90,7 @@ jobs:
           APPDOME_TEAM_ID: ${{ secrets.APPDOME_TEAM_ID }}
           APPDOME_ANDROID_FS_ID: ${{ secrets.APPDOME_ANDROID_FS_ID }}
         run: |
-          python3 appdome/appdome-api-python/appdome_api.py --app <apk/aab file> --sign_on_appdome --keystore <keystore file> --keystore_pass ${{github.event.inputs.keystore_password}} --keystore_alias ${{github.event.inputs.keystore_alias}} --key_pass ${{github.event.inputs.key_pass}} --output /output --certificate_output /certificate
+          python3 appdome/appdome-api-python/appdome_api.py --app <apk/aab file> --sign_on_appdome --keystore file/file.keystore --keystore_pass ${{github.event.inputs.keystore_password}} --keystore_alias ${{github.event.inputs.keystore_alias}} --key_pass ${{github.event.inputs.key_pass}} --output /output --certificate_output /certificate
           ls outputs
           
       # Run appdome api for iOS apps
