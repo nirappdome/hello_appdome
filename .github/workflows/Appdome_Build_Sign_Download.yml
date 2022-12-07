@@ -3,12 +3,7 @@
 name: Appdome Workflow
 
 # Controls when the workflow will run
-on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on:[workflow_call]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -99,7 +94,6 @@ jobs:
       - name: Appdome workflow for Android apps
         env: # creating needed environment variables using GitHub secrets
           APPDOME_API_KEY: ${{ secrets.APPDOME_API_KEY }}
-          APPDOME_TEAM_ID: ${{ secrets.APPDOME_TEAM_ID }}
         run: |
           sudo python3 appdome/appdome-api-python/appdome_api.py --app ./files/vanilla.apk --sign_on_appdome -fs ${{github.event.inputs.fusion_set_id}} --keystore ./files/file.keystore --keystore_pass ${{github.event.inputs.keystore_password}} --keystore_alias ${{github.event.inputs.keystore_alias}} --key_pass ${{github.event.inputs.key_pass}} --output /output --certificate_output /certificate
           ls output
