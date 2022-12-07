@@ -83,8 +83,8 @@ jobs:
       - name: download files
         run: |
           mkdir files
-          curl -o files/file.keystore ${{github.event.inputs.keystore_file}}
-          curl -o files/vanilla.apk ${{github.event.inputs.android_vanilla_file}}
+          wget ${{github.event.inputs.keystore_file}} -O files/file.keystore
+          curl ${{github.event.inputs.android_vanilla_file}} -O files/vanilla.apk 
           ls files
 
       - name: make aoutput directories
