@@ -1,0 +1,105 @@
+# This is a basic workflow for integrating appdome-api-python with your github project
+# File location should be under .github/workflows/
+name: Appdome IOS Fuse Build And Sign
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  # Inputs the workflow accepts.
+    inputs:
+      ios_vanilla_file:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'Download link for IPA file'
+        # Default value if no value is explicitly provided
+        default: ''
+        # Input has to be provided for the workflow to run
+        required: true
+      Fusion_set_id:
+        description: "IOS fusion set id"
+        default: ''
+        required: true
+      p12_file:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'Download link for P12 file'
+        # Default value if no value is explicitly provided
+        default: ''
+        # Input has to be provided for the workflow to run
+        required: true
+      p12_password:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'P12 password'
+        # Default value if no value is explicitly provided
+        default: ''
+        # Input has to be provided for the workflow to run
+        required: true
+      Provisioning_Profiles:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'Download link for Provisioning Profiles file'
+        # Default value if no value is explicitly provided
+        default: ''
+        # Input has to be provided for the workflow to run
+        required: true
+      entitlements_file:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'Download link for entitlements file'
+        # Default value if no value is explicitly provided
+        default: ''
+        # Input has to be provided for the workflow to run
+        required: true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # A demo job that builds an application to use with appdome
+  build_app:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        with:
+          path: main
+          
+     # Cloning appdome-api-python github repository
+      - name: Cloning appdome-api-python github repository
+        uses: actions/checkout@master
+        with:
+          repository: Appdome/appdome-api-python
+          ref: refs/heads/main
+          path: appdome
+
+      # Runs dependencies intallation
+      - name: Run dependencies installation
+        run: |
+            sudo apt update 
+            sudo apt install python3-pip
+            sudo pip3 install -r appdome/requirements.txt
+      
+      - name: download files
+        run: |
+          mkdir files
+          wget ${{github.event.inputs.p12_file}} -O files/p12
+          wget ${{github.event.inputs.ios_vanilla_file}} -O files/vanilla.ipa
+          wget ${{github.event.inputs.Provisioning_Profiles}} -O files/provision_profile
+          wget ${{github.event.inputs.entitlements_file}} -O files/entitlements_file
+          ls files
+
+      - name: make aoutput directories
+        run: |
+          mkdir output
+          mkdir certificate
+          
+      # Run appdome api for iOS apps
+      - name: Appdome workflow for IOS
+        run: |
+          sudo python3 appdome/appdome-api-python/appdome_api.py -key ${{secrets.APPDOME_API_KEY}} --app ./files/vanilla.ipa --sign_on_appdome --keystore ./files/p12 --keystore_pass ${{github.event.inputs.p12_password}} --provisioning_profiles ./files/provision_profile --entitlements ./files/entitlements_file --output /output/appdome_vanilla.ipa --certificate_output /certificate/certificate.pdf
+          ls output
+      
+      # Upload fuse output as an artifacts
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: workflow-artifacts
+          path: ./output/Appdome_vanilla.apk # path to output folder
