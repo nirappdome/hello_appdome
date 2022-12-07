@@ -96,6 +96,7 @@ jobs:
         run: |
           sudo python3 appdome/appdome-api-python/appdome_api.py -key ${{secrets.APPDOME_API_KEY}} --app ./files/vanilla.apk --sign_on_appdome -fs ${{github.event.inputs.fusion_set_id}} --keystore ./files/file.keystore --keystore_pass ${{github.event.inputs.keystore_password}} --keystore_alias ${{github.event.inputs.keystore_alias}} --key_pass ${{github.event.inputs.key_pass}} --output ./output/appdome_vanilla.apk --certificate_output ./certificate/certificate.pdf
           ls output
+          ls certificate
       
       # Upload fuse output as an artifacts
       - name: Upload artifacts
