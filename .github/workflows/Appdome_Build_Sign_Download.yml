@@ -101,27 +101,27 @@ jobs:
           APPDOME_API_KEY: ${{ secrets.APPDOME_API_KEY }}
           APPDOME_TEAM_ID: ${{ secrets.APPDOME_TEAM_ID }}
         run: |
-          python3 appdome/appdome-api-python/appdome_api.py --app ./files/vanilla.apk --sign_on_appdome -fs ${{github.event.inputs.fusion_set_id}} --keystore ./files/file.keystore --keystore_pass ${{github.event.inputs.keystore_password}} --keystore_alias ${{github.event.inputs.keystore_alias}} --key_pass ${{github.event.inputs.key_pass}} --output /output --certificate_output /certificate
-          ls outputs
+          sudo python3 appdome/appdome-api-python/appdome_api.py --app ./files/vanilla.apk --sign_on_appdome -fs ${{github.event.inputs.fusion_set_id}} --keystore ./files/file.keystore --keystore_pass ${{github.event.inputs.keystore_password}} --keystore_alias ${{github.event.inputs.keystore_alias}} --key_pass ${{github.event.inputs.key_pass}} --output /output --certificate_output /certificate
+          ls output
           
       # Run appdome api for iOS apps
-      - name: Appdome workflow for Android apps
-        env: # creating needed environment variables using GitHub secrets
-          APPDOME_API_KEY: ${{ secrets.APPDOME_API_KEY }}
-          APPDOME_TEAM_ID: ${{ secrets.APPDOME_TEAM_ID }}
-          APPDOME_IOS_FS_ID: ${{ secrets.APPDOME_IOS_FS_ID }}
-        run: |
-          mkdir outputs
-          pip install -r appdome/requirements.txt
-          python3 appdome/appdome-api-python/appdome_api.py --app <ipa file> --sign_on_appdome --keystore <p12 file> \
-                  --keystore_pass <p12 password> --provisioning_profiles <provisioning profile file> <another provisioning profile file if needed> \
-                  --entitlements <entitlements file> <another entitlements file if needed> --output outputs/<output ipa> 
-                  --certificate_output outputs/<output certificate pdf>
-          ls outputs
+      #- name: Appdome workflow for Android apps
+      #  env: # creating needed environment variables using GitHub secrets
+      #    APPDOME_API_KEY: ${{ secrets.APPDOME_API_KEY }}
+      #    APPDOME_TEAM_ID: ${{ secrets.APPDOME_TEAM_ID }}
+       #   APPDOME_IOS_FS_ID: ${{ secrets.APPDOME_IOS_FS_ID }}
+       # run: |
+        #  mkdir outputs
+         # pip install -r appdome/requirements.txt
+          #python3 appdome/appdome-api-python/appdome_api.py --app <ipa file> --sign_on_appdome --keystore <p12 file> \
+           #       --keystore_pass <p12 password> --provisioning_profiles <provisioning profile file> <another provisioning profile file if needed> \
+            #      --entitlements <entitlements file> <another entitlements file if needed> --output outputs/<output ipa> 
+             #     --certificate_output outputs/<output certificate pdf>
+          #ls outputs
       
       # Upload fuse output as an artifacts
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: workflow-artifacts
-          path: outputs # path to output folder
+          path: output # path to output folder
