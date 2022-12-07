@@ -99,7 +99,7 @@ jobs:
           APPDOME_TEAM_ID: ${{ secrets.APPDOME_TEAM_ID }}
           APPDOME_ANDROID_FS_ID: ${{ secrets.APPDOME_ANDROID_FS_ID }}
         run: |
-          python3 appdome/appdome-api-python/appdome_api.py --app files/vanilla.apk --sign_on_appdome --keystore files/file.keystore --keystore_pass ${{github.event.inputs.keystore_password}} --keystore_alias ${{github.event.inputs.keystore_alias}} --key_pass ${{github.event.inputs.key_pass}} --output /output --certificate_output /certificate
+          python3 appdome/appdome-api-python/appdome_api.py --app ./files/vanilla.apk --sign_on_appdome --keystore ./files/file.keystore --keystore_pass ${{github.event.inputs.keystore_password}} --keystore_alias ${{github.event.inputs.keystore_alias}} --key_pass ${{github.event.inputs.key_pass}} --output /output --certificate_output /certificate
           ls outputs
           
       # Run appdome api for iOS apps
