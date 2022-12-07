@@ -102,4 +102,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: workflow-artifacts
-          path: ./output/Appdome_vanilla.apk # path to output folder
+          path: ./output/appdome_vanilla.ipa # path to output folder
