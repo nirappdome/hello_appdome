@@ -21,6 +21,10 @@ on:
         default: ''
         # Input has to be provided for the workflow to run
         required: true
+      Fusion_set_id:
+        description: "Android fusion set id"
+        default: ''
+        required: true
       Keystore_file:
         # Friendly description to be shown in the UI instead of 'name'
         description: 'Keystore file'
@@ -96,9 +100,8 @@ jobs:
         env: # creating needed environment variables using GitHub secrets
           APPDOME_API_KEY: ${{ secrets.APPDOME_API_KEY }}
           APPDOME_TEAM_ID: ${{ secrets.APPDOME_TEAM_ID }}
-          APPDOME_ANDROID_FS_ID: ${{ secrets.APPDOME_ANDROID_FS_ID }}
         run: |
-          python3 appdome/appdome-api-python/appdome_api.py --app ./files/vanilla.apk --sign_on_appdome --keystore ./files/file.keystore --keystore_pass ${{github.event.inputs.keystore_password}} --keystore_alias ${{github.event.inputs.keystore_alias}} --key_pass ${{github.event.inputs.key_pass}} --output /output --certificate_output /certificate
+          python3 appdome/appdome-api-python/appdome_api.py --app ./files/vanilla.apk --sign_on_appdome -fs ${{github.event.inputs.fusion_set_id}} --keystore ./files/file.keystore --keystore_pass ${{github.event.inputs.keystore_password}} --keystore_alias ${{github.event.inputs.keystore_alias}} --key_pass ${{github.event.inputs.key_pass}} --output /output --certificate_output /certificate
           ls outputs
           
       # Run appdome api for iOS apps
