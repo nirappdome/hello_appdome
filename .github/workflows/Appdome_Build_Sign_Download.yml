@@ -76,7 +76,7 @@ jobs:
       - name: download files
         run: |
           mkdir files
-          curl -o file/file.keystore ${{github.event.inputs.keystore_file}}
+          curl -o files/file.keystore ${{github.event.inputs.keystore_file}}
 
       - name: make aoutput directories
         run: |
