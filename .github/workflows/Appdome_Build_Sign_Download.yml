@@ -14,6 +14,13 @@ on:
   workflow_dispatch:
   # Inputs the workflow accepts.
     inputs:
+      Keystore_file:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'Keystore file'
+        # Default value if no value is explicitly provided
+        default: ''
+        # Input has to be provided for the workflow to run
+        required: true
       keystore_password:
         # Friendly description to be shown in the UI instead of 'name'
         description: 'keystore password'
@@ -58,15 +65,19 @@ jobs:
           ref: refs/heads/main
           path: appdome
 
-      # Runs a single command using the runners shell
-      - name: Run requirments installation
+      # Runs dependencies intallation
+      - name: Run dependencies installation
         run: |
             sudo apt update 
             sudo apt install python3-pip
             sudo pip3 install -r appdome/requirements.txt
+      
+      - name: download files
+        run: |
+          mkdir files
+          curl ${{github.event.inputs.keystore_file}}
 
-      # Runs a set of commands using the runners shell
-      - name: pip3 version
+      - name: make aoutput directories
         run: |
           mkdir output
           mkdir certificate
