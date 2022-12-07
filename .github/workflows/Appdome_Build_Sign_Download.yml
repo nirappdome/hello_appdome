@@ -85,6 +85,7 @@ jobs:
           mkdir files
           curl -o files/file.keystore ${{github.event.inputs.keystore_file}}
           curl -o files/vanilla.apk ${{github.event.inputs.android_vanilla_file}}
+          ls /files
 
       - name: make aoutput directories
         run: |
