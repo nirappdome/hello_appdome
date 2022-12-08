@@ -19,6 +19,14 @@ on:
         description: "Android fusion set id"
         default: ''
         required: true
+      sign_otions:
+        type: choice
+        description: Android Sign Options
+        options: 
+        - Appdome Signing
+        - Private Signing
+        - Auto-Dev Private Signing
+        required: true
       Keystore_file:
         # Friendly description to be shown in the UI instead of 'name'
         description: 'Keystore file'
@@ -90,7 +98,15 @@ jobs:
           APPDOME_API_KEY_TEMP: ${{secrets.APPDOME_API_KEY}}
         run: |
           mkdir output
+          if ${{ github.event.inputs.sign_otions}}=="Appdome Signing";then
+          sudo python3 appdome/appdome-api-python/appdome_api.py -key ${{secrets.APPDOME_API_KEY}} --app ./files/vanilla.apk --private_signing -fs ${{github.event.inputs.fusion_set_id}} --keystore ./files/file.keystore --keystore_pass ${{github.event.inputs.keystore_password}} --keystore_alias ${{github.event.inputs.keystore_alias}} --key_pass ${{github.event.inputs.key_pass}} --output ./output/appdome_vanilla.apk --certificate_output ./output/certificate.pdf
+          fi
+          if ${{ github.event.inputs.sign_otions}}=="Private Signing";then
           sudo python3 appdome/appdome-api-python/appdome_api.py -key ${{secrets.APPDOME_API_KEY}} --app ./files/vanilla.apk --sign_on_appdome -fs ${{github.event.inputs.fusion_set_id}} --keystore ./files/file.keystore --keystore_pass ${{github.event.inputs.keystore_password}} --keystore_alias ${{github.event.inputs.keystore_alias}} --key_pass ${{github.event.inputs.key_pass}} --output ./output/appdome_vanilla.apk --certificate_output ./output/certificate.pdf
+          fi
+          if ${{ github.event.inputs.sign_otions}}=="Auto-Dev Private Signing";then
+          sudo python3 appdome/appdome-api-python/appdome_api.py -key ${{secrets.APPDOME_API_KEY}} --app ./files/vanilla.apk --auto_dev_private_signing -fs ${{github.event.inputs.fusion_set_id}} --keystore ./files/file.keystore --keystore_pass ${{github.event.inputs.keystore_password}} --keystore_alias ${{github.event.inputs.keystore_alias}} --key_pass ${{github.event.inputs.key_pass}} --output ./output/appdome_vanilla.apk --certificate_output ./output/certificate.pdf
+          fi
           ls output
           
       # Upload fuse output as an artifacts
