@@ -1,0 +1,35 @@
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  # Inputs the workflow accepts.
+    inputs:
+      Keystore_file:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'Keystore file'
+        # Default value if no value is explicitly provided
+        default: ''
+        # Input has to be provided for the workflow to run
+        required: true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # A demo job that builds an application to use with appdome
+  build_app:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        with:
+          path: main
+      
+      - name: download files
+        run: |
+          for i in ${{github.event.inputs.keystore_file}}
+            do
+              if [[ $i != "," ]]; then
+              echo $i
+            fi
+            done
