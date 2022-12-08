@@ -80,17 +80,31 @@ jobs:
       - name: download files
         run: |
           mkdir files
+          mkdir files/provision_profile
+          mkdir files/entitlements
           wget ${{github.event.inputs.p12_file}} -O files/p12
           wget ${{github.event.inputs.ios_vanilla_file}} -O files/vanilla.ipa
-          wget ${{github.event.inputs.Provisioning_Profiles}} -O files/provision_profile
-          wget ${{github.event.inputs.entitlements_file}} -O files/entitlements_file
+          counter=1
+          for i in ${{github.event.inputs.Provisioning_Profiles}}
+            do
+              wget $i -O "files/provision_profile/${counter}.mobileprovision"
+              provision_profile_paths="$provision_profile_paths files/provision_profile/${counter}.mobileprovision"
+              ((counter++))
+            done
+          counter=1  
+          for i in ${{github.event.inputs.entitlements_file}}
+            do
+              wget $i -O "files/entitlements/${counter}.plist"
+              entitlements_paths="$entitlements_paths files/entitlements/${counter}.plist"
+              ((counter++))
+            done
           ls files
           
       # Run appdome api for iOS apps
       - name: Appdome workflow for IOS
         run: |
           mkdir output
-          sudo python3 appdome/appdome-api-python/appdome_api.py -key ${{secrets.APPDOME_API_KEY}} --app ./files/vanilla.ipa --sign_on_appdome --keystore ./files/p12 --keystore_pass ${{github.event.inputs.p12_password}} --provisioning_profiles ./files/provision_profile --entitlements ./files/entitlements_file --output ./output/appdome_vanilla.ipa --certificate_output ./output/certificate.pdf
+          sudo python3 appdome/appdome-api-python/appdome_api.py -key ${{secrets.APPDOME_API_KEY}} --app ./files/vanilla.ipa --sign_on_appdome --keystore ./files/p12 --keystore_pass ${{github.event.inputs.p12_password}} --provisioning_profiles $provision_profile_paths --entitlements $entitlements_paths --output ./output/appdome_vanilla.ipa --certificate_output ./output/certificate.pdf
           ls output
       
       # Upload fuse output as an artifacts
