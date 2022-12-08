@@ -85,16 +85,12 @@ jobs:
           wget ${{github.event.inputs.Provisioning_Profiles}} -O files/provision_profile
           wget ${{github.event.inputs.entitlements_file}} -O files/entitlements_file
           ls files
-
-      - name: make aoutput directories
-        run: |
-          mkdir output
-          mkdir certificate
           
       # Run appdome api for iOS apps
       - name: Appdome workflow for IOS
         run: |
-          sudo python3 appdome/appdome-api-python/appdome_api.py -key ${{secrets.APPDOME_API_KEY}} --app ./files/vanilla.ipa --sign_on_appdome --keystore ./files/p12 --keystore_pass ${{github.event.inputs.p12_password}} --provisioning_profiles ./files/provision_profile --entitlements ./files/entitlements_file --output /output/appdome_vanilla.ipa --certificate_output /certificate/certificate.pdf
+          mkdir output
+          sudo python3 appdome/appdome-api-python/appdome_api.py -key ${{secrets.APPDOME_API_KEY}} --app ./files/vanilla.ipa --sign_on_appdome --keystore ./files/p12 --keystore_pass ${{github.event.inputs.p12_password}} --provisioning_profiles ./files/provision_profile --entitlements ./files/entitlements_file --output ./output/appdome_vanilla.ipa --certificate_output ./output/certificate.pdf
           ls output
       
       # Upload fuse output as an artifacts
@@ -102,4 +98,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: workflow-artifacts
-          path: ./output/appdome_vanilla.ipa # path to output folder
+          path: ./output/ # path to output folder
