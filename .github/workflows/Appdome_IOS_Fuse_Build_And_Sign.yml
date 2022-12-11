@@ -116,7 +116,7 @@ jobs:
       # Run appdome api for iOS apps
       - name: Appdome workflow for IOS
         run: |
-          PRO=$(ls files/provision_profile)
+          PRO=$(ls -d files/provision_profile/*)
           echo "!!! $PRO"
           mkdir output
           CHOICE="${{github.event.inputs.sign_otions}}"
