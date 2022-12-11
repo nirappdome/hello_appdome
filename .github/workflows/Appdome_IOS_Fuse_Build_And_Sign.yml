@@ -120,11 +120,11 @@ jobs:
           mkdir output
           CHOICE="${{github.event.inputs.sign_otions}}"
           if [[ $CHOICE == "Appdome Signing" ]];then
-            sudo python3 appdome/appdome-api-python/appdome_api.py -key ${{secrets.APPDOME_API_KEY}} --app ./files/vanilla.ipa --sign_on_appdome --keystore ./files/p12 --keystore_pass ${{github.event.inputs.p12_password}} --sign_overrides files/sign_overrides.json --provisioning_profiles ${{provision_profile_paths}} --entitlements $entitlements_paths --output ./output/appdome_vanilla.ipa --certificate_output ./output/certificate.pdf
+            sudo python3 appdome/appdome-api-python/appdome_api.py -key ${{secrets.APPDOME_API_KEY}} --app ./files/vanilla.ipa --sign_on_appdome --keystore ./files/p12 --keystore_pass ${{github.event.inputs.p12_password}} --sign_overrides files/sign_overrides.json --provisioning_profiles "$provision_profile_paths" --entitlements $entitlements_paths --output ./output/appdome_vanilla.ipa --certificate_output ./output/certificate.pdf
           elif [[ $CHOICE == "Private Signing" ]];then
-            sudo python3 appdome/appdome-api-python/appdome_api.py -key ${{secrets.APPDOME_API_KEY}} --app ./files/vanilla.ipa --private_signing --sign_overrides files/sign_overrides.json --provisioning_profiles ${{provision_profile_paths}} --output ./output/appdome_vanilla.ipa --certificate_output ./output/certificate.pdf
+            sudo python3 appdome/appdome-api-python/appdome_api.py -key ${{secrets.APPDOME_API_KEY}} --app ./files/vanilla.ipa --private_signing --sign_overrides files/sign_overrides.json --provisioning_profiles "$provision_profile_paths" --output ./output/appdome_vanilla.ipa --certificate_output ./output/certificate.pdf
           elif [[ $CHOICE == "Auto-Dev Private Signing" ]];then
-            sudo python3 appdome/appdome-api-python/appdome_api.py -key ${{secrets.APPDOME_API_KEY}} --app ./files/vanilla.ipa --auto_dev_private_signing --sign_overrides files/sign_overrides.json --provisioning_profiles ${{provision_profile_paths}} --entitlements $entitlements_paths --output ./output/appdome_vanilla.ipa --certificate_output ./output/certificate.pdf
+            sudo python3 appdome/appdome-api-python/appdome_api.py -key ${{secrets.APPDOME_API_KEY}} --app ./files/vanilla.ipa --auto_dev_private_signing --sign_overrides files/sign_overrides.json --provisioning_profiles "$provision_profile_paths" --entitlements $entitlements_paths --output ./output/appdome_vanilla.ipa --certificate_output ./output/certificate.pdf
           fi
           ls output
       
