@@ -113,12 +113,13 @@ jobs:
           wget ${{github.event.inputs.ios_vanilla_file}} -O files/vanilla.ipa
           ls files
           echo $provision_profile_paths
+          ${{github.event.inputs.Provisioning_Profiles}}=$provision_profile_paths
           
       # Run appdome api for iOS apps
       - name: Appdome workflow for IOS
         run: |
-          PRO=$provision_profile_paths
-          echo $PRO
+          PRO=${{github.event.inputs.Provisioning_Profiles}}
+          echo "!!! $PRO"
           mkdir output
           CHOICE="${{github.event.inputs.sign_otions}}"
           if [[ $CHOICE == "Appdome Signing" ]];then
