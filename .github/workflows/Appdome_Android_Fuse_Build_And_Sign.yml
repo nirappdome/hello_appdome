@@ -90,7 +90,7 @@ jobs:
         run: |
           mkdir files
           wget ${{github.event.inputs.android_vanilla_file}} -O files/vanilla.apk
-          if [[ -n "${{github.event.inputs.keystore_file}}" ]]; then
+          if [ -n ${{github.event.inputs.keystore_file}} ]; then
             echo "Downloading keystore file"
             wget ${{github.event.inputs.keystore_file}} -O files/file.keystore
           fi
