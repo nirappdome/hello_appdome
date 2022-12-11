@@ -89,7 +89,7 @@ jobs:
           mkdir files/entitlements
           VAR=${{github.event.inputs.p12_file}}
           if [[ $VAR != '' ]]; then
-            wget $VAR -O files/p12
+            wget $VAR -O files/cert.p12
           fi
           counter=1
           for i in ${{github.event.inputs.Provisioning_Profiles}}
