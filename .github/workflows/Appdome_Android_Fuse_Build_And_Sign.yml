@@ -94,7 +94,8 @@ jobs:
             echo "Downloading keystore file"
             wget ${{github.event.inputs.keystore_file}} -O files/file.keystore
           fi
-          if [[ ${{github.event.inputs.sign_overrids}} != '' ]]; then
+          VAR=${{github.event.inputs.sign_overrids}}
+          if [[ $VAR != '' ]]; then
             echo "Downloading json sign overrides"
             wget ${{github.event.inputs.sign_overrids}} -O files/sign_overrides.json
           fi
