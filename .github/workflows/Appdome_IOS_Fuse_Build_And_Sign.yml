@@ -112,13 +112,11 @@ jobs:
           fi
           wget ${{github.event.inputs.ios_vanilla_file}} -O files/vanilla.ipa
           ls files
-          echo $provision_profile_paths
-          ${{github.event.inputs.Provisioning_Profiles}}=$provision_profile_paths
           
       # Run appdome api for iOS apps
       - name: Appdome workflow for IOS
         run: |
-          PRO=${{github.event.inputs.Provisioning_Profiles}}
+          PRO=$(ls files/provision_profile)
           echo "!!! $PRO"
           mkdir output
           CHOICE="${{github.event.inputs.sign_otions}}"
