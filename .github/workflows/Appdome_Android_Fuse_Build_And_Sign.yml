@@ -106,7 +106,7 @@ jobs:
       - name: Appdome workflow for Android apps
         run: |
           mkdir output
-          CHOICE=${{ github.event.inputs.sign_otions}}
+          CHOICE="${{github.event.inputs.sign_otions}}"
           if [[ $CHOICE == "Appdome Signing" ]];then
             VAR=${{github.event.inputs.sign_overrids}}
             if [[ -n $VAR ]]; then
