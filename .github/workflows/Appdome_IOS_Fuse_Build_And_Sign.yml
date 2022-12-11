@@ -33,30 +33,23 @@ on:
         # Default value if no value is explicitly provided
         default: ''
         # Input has to be provided for the workflow to run
-        required: true
+        required: false
       p12_password:
         # Friendly description to be shown in the UI instead of 'name'
         description: 'P12 password'
         # Default value if no value is explicitly provided
         default: ''
-        # Input has to be provided for the workflow to run
-        required: true
+        required: false
       Provisioning_Profiles:
-        # Friendly description to be shown in the UI instead of 'name'
         description: 'Download link for Provisioning Profiles file'
-        # Default value if no value is explicitly provided
         default: ''
-        # Input has to be provided for the workflow to run
         required: true
       entitlements_file:
-        # Friendly description to be shown in the UI instead of 'name'
         description: 'Download link for entitlements file'
-        # Default value if no value is explicitly provided
         default: ''
-        # Input has to be provided for the workflow to run
-        required: true
+        required: false
       sign_overrids:
-        description: 'Download link for json file with sign overrides'
+        description: 'Download link for json sign overrides'
         default: ''
         required: true
 
