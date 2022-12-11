@@ -51,7 +51,7 @@ on:
       sign_overrids:
         description: 'Download link for json sign overrides'
         default: ''
-        required: true
+        required: false
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -127,6 +127,7 @@ jobs:
                 sudo python3 appdome/appdome-api-python/appdome_api.py -key ${{secrets.APPDOME_API_KEY}} -fs ${{github.event.inputs.fusion_set_id}} --app ./files/vanilla.ipa --sign_on_appdome --keystore ./files/p12 --keystore_pass ${{github.event.inputs.p12_password}} --sign_overrides files/sign_overrides.json --provisioning_profiles "$provision_profile_paths" --entitlements "$entitlements_paths" --output ./output/appdome_vanilla.ipa --certificate_output ./output/certificate.pdf
               else
                 sudo python3 appdome/appdome-api-python/appdome_api.py -key ${{secrets.APPDOME_API_KEY}} -fs ${{github.event.inputs.fusion_set_id}} --app ./files/vanilla.ipa --sign_on_appdome --keystore ./files/p12 --keystore_pass ${{github.event.inputs.p12_password}} --sign_overrides files/sign_overrides.json --provisioning_profiles "$provision_profile_paths" --output ./output/appdome_vanilla.ipa --certificate_output ./output/certificate.pdf
+              fi
             else
               VAR=${{github.event.inputs.entitlements_file}}
               if [[ -n $VAR ]]; then
