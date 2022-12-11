@@ -89,15 +89,15 @@ jobs:
       - name: download files
         run: |
           mkdir files
-          wget ${{github.event.inputs.android_vanilla_file}} -O files/vanilla.apk
           if [[ ${{github.event.inputs.keystore_file}} != '' ]]; then
             echo "Downloading keystore file"
             wget ${{github.event.inputs.keystore_file}} -O files/file.keystore
           fi
-          if [[ -n ${{github.event.inputs.sign_overrids}} ]]; then
+          if [[ ${{github.event.inputs.sign_overrids}} != '' ]]; then
             echo "Downloading json sign overrides"
             wget ${{github.event.inputs.sign_overrids}} -O files/sign_overrides.json
           fi
+          wget ${{github.event.inputs.android_vanilla_file}} -O files/vanilla.apk
           ls files
       
       # Run appdome api for Android apps
