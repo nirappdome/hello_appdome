@@ -112,6 +112,7 @@ jobs:
           fi
           wget ${{github.event.inputs.ios_vanilla_file}} -O files/vanilla.ipa
           ls files
+          echo $provision_profile_paths
           
       # Run appdome api for iOS apps
       - name: Appdome workflow for IOS
