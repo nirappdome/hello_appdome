@@ -54,5 +54,9 @@ jobs:
           command: |
             mkdir output
             python3 ./appdome-api-python/appdome-api-python/appdome_api.py --api_key $APPDOME_API_KEY --fusion_set_id << pipeline.parameters.fusion-set-id >> --app ./files/vanilla.apk --sign_on_appdome --keystore ./files/file.keystore --keystore_pass << pipeline.parameters.keystore-password >> --keystore_alias << pipeline.parameters.keystore-alias >> --key_pass << pipeline.parameters.keystore-key-password >> --output ./output/appdome_vanilla.apk --certificate_output ./output/certificate.pdf
-      - store_artifacts:
-          path: /output
+      - run:
+          name: Compress Artifacts
+          command: tar -cvzf appdome_artifact.tar ./output
+      - store_artifacts: 
+          path: ./output/appdome_artifact.tar
+          destination: appdoem_artifact
