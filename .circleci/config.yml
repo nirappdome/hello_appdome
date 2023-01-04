@@ -16,5 +16,4 @@ jobs:
       - run:
           name: Install requirments
           command: |
-            cd ./appdome-api-python
-            ls -al
+            pip3 install -r ./appdome-api-pythom/requirements.txt
