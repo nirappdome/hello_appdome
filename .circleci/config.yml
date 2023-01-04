@@ -22,7 +22,7 @@ parameters:
     
 jobs:
   build:
-  environment:
+    environment:
       MY_SECRET: $APPDOME_API_KEY
     docker:
       - image: cimg/python:3.9.16
