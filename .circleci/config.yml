@@ -22,6 +22,8 @@ parameters:
     
 jobs:
   build:
+  environment:
+      MY_SECRET: $APPDOME_API_KEY
     docker:
       - image: cimg/python:3.9.16
         auth:
@@ -41,4 +43,4 @@ jobs:
       - run:
           name: Build Sign Download
           command: |
-            python3 ./appdome-api-python/appdome-api-python/appdome_api.py --api_key key --fusion_set_id << pipeline.parameters.fusion-set-id >> --team_id ti --app << pipeline.parameters.app-file >> --sign_on_appdome --keystore << pipeline.parameters.keystore-file >> --keystore_pass << pipeline.parameters.keystore-password >> --keystore_alias << pipeline.parameters.keystore-alias >> --key_pass << pipeline.parameters.keystore-key-password >> --output o/ --certificate_output o/cert.pdf
+            python3 ./appdome-api-python/appdome-api-python/appdome_api.py --api_key $APPDOME_API_KEY --fusion_set_id << pipeline.parameters.fusion-set-id >> --app << pipeline.parameters.app-file >> --sign_on_appdome --keystore << pipeline.parameters.keystore-file >> --keystore_pass << pipeline.parameters.keystore-password >> --keystore_alias << pipeline.parameters.keystore-alias >> --key_pass << pipeline.parameters.keystore-key-password >> --output o/ --certificate_output o/cert.pdf
