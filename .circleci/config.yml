@@ -1,18 +1,24 @@
 version: 2.1
 
 parameters:
-  apk-file:
+  app-file:
     type: string
+    default: ""
   fusion-set-id:
     type: string
+    default: ""
   keystore-file:
     type: string
+    default: ""
   keystore-password:
     type: string
+    default: ""
   keystore-alias:
     type: string
+    default: ""
   keystore-key-password:
     type: string
+    default: ""
     
 jobs:
   build:
@@ -35,4 +41,4 @@ jobs:
       - run:
           name: Build Sign Download
           command: |
-            python3 ./appdome-api-python/appdome-api-python/appdome_api.py --api_key key --fusion_set_id << pipeline.parameters.fusion-set-id >> --team_id ti --app app --sign_on_appdome --keystore kf --keystore_pass << pipeline.parameters.keystore-password >> --keystore_alias << pipeline.parameters.keystore-alias >> --key_pass k_p --output o/ --certificate_output o/cert.pdf
+            python3 ./appdome-api-python/appdome-api-python/appdome_api.py --api_key key --fusion_set_id << pipeline.parameters.fusion-set-id >> --team_id ti --app << pipeline.parameters.app-file >> --sign_on_appdome --keystore << pipeline.parameters.keystore-file >> --keystore_pass << pipeline.parameters.keystore-password >> --keystore_alias << pipeline.parameters.keystore-alias >> --key_pass << pipeline.parameters.keystore-key-password >> --output o/ --certificate_output o/cert.pdf
