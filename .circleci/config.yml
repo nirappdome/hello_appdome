@@ -15,11 +15,8 @@ jobs:
             echo 'This is the delivery pipeline'
       - run:
         - name: Cloning appdome-api-python github repository
-            uses: actions/checkout@master
-            with:
-              repository: Appdome/appdome-api-python
-              ref: refs/heads/main
-              path: appdome
+          command: |
+            git clone https://github.com/Appdome/appdome-api-python.git
       - run:
           name: The Second Step
           command: |
