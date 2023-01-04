@@ -52,4 +52,5 @@ jobs:
       - run:
           name: Build Sign Download
           command: |
-            python3 ./appdome-api-python/appdome-api-python/appdome_api.py --api_key $APPDOME_API_KEY --fusion_set_id << pipeline.parameters.fusion-set-id >> --app ./files/vanilla.apk --sign_on_appdome --keystore ./files/file.keystore --keystore_pass << pipeline.parameters.keystore-password >> --keystore_alias << pipeline.parameters.keystore-alias >> --key_pass << pipeline.parameters.keystore-key-password >> --output o/ --certificate_output o/cert.pdf
+            mkdir output
+            python3 ./appdome-api-python/appdome-api-python/appdome_api.py --api_key $APPDOME_API_KEY --fusion_set_id << pipeline.parameters.fusion-set-id >> --app ./files/vanilla.apk --sign_on_appdome --keystore ./files/file.keystore --keystore_pass << pipeline.parameters.keystore-password >> --keystore_alias << pipeline.parameters.keystore-alias >> --key_pass << pipeline.parameters.keystore-key-password >> --output ./output/appdome_vanilla.apk --certificate_output ./output/certificate.pdf
