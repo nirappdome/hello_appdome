@@ -12,3 +12,4 @@ jobs:
           name: The First Step
           command: |
             git clone https://github.com/Appdome/appdome-api-python.git
+            ls -al
