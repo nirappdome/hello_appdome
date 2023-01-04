@@ -1,29 +1,20 @@
 version: 2.1
 jobs:
-  build_docker:
+  build:
     docker:
-      - image: cimg/python:3.9.16
+      - image: cimg/base:2021.04
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
       - checkout
-  clone_appdome_api:
-    steps:
       - run:
-          name: Clone appfome api repository
+          name: The First Step
           command: |
-            git clone https://github.com/Appdome/appdome-api-python.git
+            echo 'Hello World!'
+            echo 'This is the delivery pipeline'
+      - run:
+          name: The Second Step
+          command: |
             ls -al
-  install_requirments:
-    steps:
-       - run:
-          name: Install python requirments
-          command: |
-            pip3 install -r /appdome-api-python/requirements.txt
-workflows:
-  nir_workflow:
-    jobs:
-      - build_docker
-      - clone_appdome_api
-      - install_requirments
+            echo '----- The files in your repro -----'
