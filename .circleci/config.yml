@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  build:
+  build_docker:
     docker:
       - image: cimg/python:3.9.16
         auth:
@@ -8,12 +8,22 @@ jobs:
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
       - checkout
+  clone_appdome_api:
+    steps:
       - run:
           name: Clone appfome api repository
           command: |
             git clone https://github.com/Appdome/appdome-api-python.git
             ls -al
+  install_requirments:
+    steps:
        - run:
           name: Install python requirments
           command: |
             pip3 install -r /appdome-api-python/requirements.txt
+workflows:
+  nir_workflow:
+    jobs:
+      - build_docker
+      - clone_appdome_api
+      - install_requirments
