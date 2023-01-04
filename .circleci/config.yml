@@ -1,4 +1,19 @@
 version: 2.1
+
+parameters:
+  apk-file:
+    type: string
+  fusion-set-id:
+    type: string
+  keystore-file:
+    type: string
+  keystore-password:
+    type: string
+  keystore-alias:
+    type: string
+  keystore-key-password:
+    type: string
+    
 jobs:
   build:
     docker:
@@ -16,7 +31,8 @@ jobs:
           name: Install requirments
           command: |
             pip3 install -r ./appdome-api-python/requirements.txt
+            apt install wget
       - run:
           name: Build Sign Download
           command: |
-            python3 ./appdome-api-python/appdome-api-python/appdome_api.py --api_key key --fusion_set_id fs --team_id ti --app app --sign_on_appdome --keystore kf --keystore_pass kp --keystore_alias ka --key_pass k_p --output o/ --certificate_output o/cert.pdf
+            python3 ./appdome-api-python/appdome-api-python/appdome_api.py --api_key key --fusion_set_id << pipeline.parameters.fusion-set-id >> --team_id ti --app app --sign_on_appdome --keystore kf --keystore_pass << pipeline.parameters.keystore-password >> --keystore_alias << pipeline.parameters.keystore-alias >> --key_pass k_p --output o/ --certificate_output o/cert.pdf
