@@ -13,7 +13,7 @@ jobs:
           command: |
             git clone https://github.com/Appdome/appdome-api-python.git
             ls -al
-            cd ./appdome-api-pythom
+            cd ./appdome-api-python
             pip3 install -r ./requirements.txt
       - run:
           name: Install requirments
