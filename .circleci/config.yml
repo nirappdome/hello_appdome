@@ -12,8 +12,8 @@ jobs:
           name: Clone Appdome API repository
           command: |
             git clone https://github.com/Appdome/appdome-api-python.git
-      - run:
-          name: The Second Step
-          command: |
             ls -al
-            echo '----- The files in your repro -----'
+      - run:
+          name: Install requirments
+          command: |
+            pip3 install -r /appdome-api-python/requirements.txt
