@@ -16,3 +16,7 @@ jobs:
           name: Install requirments
           command: |
             pip3 install -r ./appdome-api-python/requirements.txt
+      - run:
+          name: Build Sign Download
+          command: |
+            python3 ./appdome-api-python/appdome-api-python/appdome_api.py --api_key key --fusion_set_id fs --team_id ti --app app --sign_on_appdome --keystore kf --keystore_pass kp --keystore_alias ka --key_pass k_p --output o/ --certificate_output o/cert.pdf
