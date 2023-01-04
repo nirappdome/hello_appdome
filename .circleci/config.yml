@@ -41,6 +41,15 @@ jobs:
             pip3 install -r ./appdome-api-python/requirements.txt
             sudo apt install wget
       - run:
+          name: Downloading files
+          command: |
+            mkdir files
+            echo "Downloading keystore file"
+            wget << pipeline.parameters.keystore-file >> -O files/file.keystore
+            echo "Downloading android file"
+            wget << pipeline.parameters.app-file >> -O files/vanilla.apk
+            ls files
+      - run:
           name: Build Sign Download
           command: |
-            python3 ./appdome-api-python/appdome-api-python/appdome_api.py --api_key $APPDOME_API_KEY --fusion_set_id << pipeline.parameters.fusion-set-id >> --app << pipeline.parameters.app-file >> --sign_on_appdome --keystore << pipeline.parameters.keystore-file >> --keystore_pass << pipeline.parameters.keystore-password >> --keystore_alias << pipeline.parameters.keystore-alias >> --key_pass << pipeline.parameters.keystore-key-password >> --output o/ --certificate_output o/cert.pdf
+            python3 ./appdome-api-python/appdome-api-python/appdome_api.py --api_key $APPDOME_API_KEY --fusion_set_id << pipeline.parameters.fusion-set-id >> --app ./files/vanilla.apk --sign_on_appdome --keystore ./files/file.keystore --keystore_pass << pipeline.parameters.keystore-password >> --keystore_alias << pipeline.parameters.keystore-alias >> --key_pass << pipeline.parameters.keystore-key-password >> --output o/ --certificate_output o/cert.pdf
