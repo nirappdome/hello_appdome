@@ -37,7 +37,7 @@ jobs:
           name: Install requirments
           command: |
             pip3 install -r ./appdome-api-python/requirements.txt
-            apt install wget
+            sudo apt install wget
       - run:
           name: Build Sign Download
           command: |
