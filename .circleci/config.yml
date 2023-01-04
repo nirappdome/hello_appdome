@@ -9,10 +9,9 @@ jobs:
     steps:
       - checkout
       - run:
-          name: The First Step
+          name: Clone Appdome API repository
           command: |
-            echo 'Hello World!'
-            echo 'This is the delivery pipeline'
+            git clone https://github.com/Appdome/appdome-api-python.git
       - run:
           name: The Second Step
           command: |
