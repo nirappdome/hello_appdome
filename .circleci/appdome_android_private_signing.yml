@@ -1,0 +1,77 @@
+version: 2.1
+
+parameters:
+  app-file:
+    type: string
+    default: ""
+  fusion-set-id:
+    type: string
+    default: ""
+  signing-fingerprint:
+    type: string
+    default: ""
+  google-play-signing:
+    type: boolean
+    default: false
+  sign-overrids:
+    type: string
+    default: ""
+    
+jobs:
+  build:
+    environment:
+      MY_SECRET: $APPDOME_API_KEY
+    docker:
+      - image: cimg/python:3.9.16
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    steps:
+      - checkout
+      - run:
+          name: Clone Appdome API repository
+          command: |
+            git clone https://github.com/Appdome/appdome-api-python.git
+      - run:
+          name: Install requirments
+          command: |
+            pip3 install -r ./appdome-api-python/requirements.txt
+            sudo apt install wget
+      - run:
+          name: Downloading files
+          command: |
+            mkdir files
+            echo "Downloading keystore file"
+            wget << pipeline.parameters.keystore-file >> -O files/file.keystore
+            echo "Downloading android file"
+            wget << pipeline.parameters.app-file >> -O files/vanilla.apk
+            VAR=$<< pipeline.parameters.sign-overrides >>
+            if [[ -n $VAR ]]; then
+              echo "Downloading sign overrides"
+              wget $VAR -O ./files/sign_overrides.json
+            fi
+            ls files
+      - run:
+          name: Build Sign Download
+          command: |
+            mkdir output
+            VAR=$<< pipeline.parameters.sign-overrides >>
+            if [[ -n $VAR ]]; then
+              VAR=$<< pipeline.parameters.google-play-signing >>
+              if [ $VAR = true ]; then
+                python3 ./appdome-api-python/appdome-api-python/appdome_api.py --api_key $APPDOME_API_KEY --fusion_set_id << pipeline.parameters.fusion-set-id >> --app ./files/vanilla.apk --private_signing --signing_fingerprint  << pipeline.parameters.signing-fingerprint >> --sign_overrides ./files/sign_overrides.json --google_play_signing --output ./output/appdome_vanilla.apk --certificate_output ./output/certificate.pdf
+              else
+                python3 ./appdome-api-python/appdome-api-python/appdome_api.py --api_key $APPDOME_API_KEY --fusion_set_id << pipeline.parameters.fusion-set-id >> --app ./files/vanilla.apk --private_signing --signing_fingerprint  << pipeline.parameters.signing-fingerprint >> --sign_overrides ./files/sign_overrides.json --output ./output/appdome_vanilla.apk --certificate_output ./output/certificate.pdf
+              fi
+            else
+              VAR=$<< pipeline.parameters.google-play-signing >>
+              if [ $VAR = true ]; then
+                python3 ./appdome-api-python/appdome-api-python/appdome_api.py --api_key $APPDOME_API_KEY --fusion_set_id << pipeline.parameters.fusion-set-id >> --app ./files/vanilla.apk --private_signing --signing_fingerprint  << pipeline.parameters.signing-fingerprint >> --google_play_signing --output ./output/appdome_vanilla.apk --certificate_output ./output/certificate.pdf
+              else
+                python3 ./appdome-api-python/appdome-api-python/appdome_api.py --api_key $APPDOME_API_KEY --fusion_set_id << pipeline.parameters.fusion-set-id >> --app ./files/vanilla.apk --private_signing --signing_fingerprint  << pipeline.parameters.signing-fingerprint >> --output ./output/appdome_vanilla.apk --certificate_output ./output/certificate.pdf
+              fi
+            fi
+      - store_artifacts:
+          path: ./output/appdome_vanilla.apk
+      - store_artifacts: 
+          path: ./output/certificate.pdf
