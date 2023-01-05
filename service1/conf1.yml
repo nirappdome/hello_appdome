@@ -1,0 +1,60 @@
+version: 2.1
+
+parameters:
+  app-file:
+    type: string
+    default: ""
+  fusion-set-id:
+    type: string
+    default: ""
+  keystore-file:
+    type: string
+    default: ""
+  keystore-password:
+    type: string
+    default: ""
+  keystore-alias:
+    type: string
+    default: ""
+  keystore-key-password:
+    type: string
+    default: ""
+    
+jobs:
+  appdome_signing:
+    environment:
+      MY_SECRET: $APPDOME_API_KEY
+    docker:
+      - image: cimg/python:3.9.16
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    steps:
+      - checkout
+      - run:
+          name: Clone Appdome API repository
+          command: |
+            git clone https://github.com/Appdome/appdome-api-python.git
+      - run:
+          name: Install requirments
+          command: |
+            pip3 install -r ./appdome-api-python/requirements.txt
+            sudo apt install wget
+      - run:
+          name: Downloading files
+          command: |
+            mkdir files
+            echo "Downloading keystore file"
+            wget << pipeline.parameters.keystore-file >> -O files/file.keystore
+            echo "Downloading android file"
+            wget << pipeline.parameters.app-file >> -O files/vanilla.apk
+            ls files
+      - run:
+          name: Build Sign Download
+          command: |
+            mkdir output
+            python3 ./appdome-api-python/appdome-api-python/appdome_api.py --api_key $APPDOME_API_KEY --fusion_set_id << pipeline.parameters.fusion-set-id >> --app ./files/vanilla.apk --sign_on_appdome --keystore ./files/file.keystore --keystore_pass << pipeline.parameters.keystore-password >> --keystore_alias << pipeline.parameters.keystore-alias >> --key_pass << pipeline.parameters.keystore-key-password >> --output ./output/appdome_vanilla.apk --certificate_output ./output/certificate.pdf
+      - store_artifacts:
+          path: ./output/appdome_vanilla.apk
+      - store_artifacts: 
+          path: ./output/certificate.pdf
