@@ -1,0 +1,5 @@
+workflows:
+  fuse_and_sign:
+    jobs:
+      - appdome_signing
+      - private_signing
