@@ -21,7 +21,7 @@ parameters:
     default: ""
     
 jobs:
-  build:
+  appdome_signing:
     environment:
       MY_SECRET: $APPDOME_API_KEY
     docker:
