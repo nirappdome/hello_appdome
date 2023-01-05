@@ -1,3 +1,5 @@
+version: 2.1
+setup: true
 workflows:
   fuse_and_sign:
     - appdome_signing
